@@ -28,11 +28,11 @@ def spell_accumntment(initial_power: int) -> Callable:
     def power_over_time(num: int) -> str:
         nonlocal power_tot
         nonlocal counter
-        if counter == 1:
-            power_tot += initial_power + num
+        timer = counter()
+        if timer == 1:
+            power_tot = initial_power + num
         else:
             power_tot += num
-        mage_counter()
         return f"Base {initial_power}, add {num}: {power_tot}"
     return power_over_time
 
