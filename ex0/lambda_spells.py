@@ -22,7 +22,7 @@ artifacts = [
 
 
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
-    sorted_artifacts = sorted(artifacts, key=lambda x: x["power"])
+    sorted_artifacts = sorted(artifacts, key=lambda x: x.get("power",0))
     return sorted_artifacts
 
 

@@ -14,11 +14,10 @@ def heal(target: str, power: int) -> int:
 
 
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
-    def combined_spell() -> str:
+    def combined_spell() -> tuple:
         return (
-                f"Combined spell result: "
-                f"{spell1(test_targets[0], test_values[0])}, \n"
-                f"{spell2(test_targets[1], test_values[1])}"
+                spell1(test_targets[0], test_values[0]),
+                spell2(test_targets[1], test_values[1])
                 )
     return combined_spell
 
@@ -32,12 +31,8 @@ print()
 def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     def multiplied_power(target: str, power: int) -> str:
         mult = power * multiplier
-        print("oraginal ", end="")
-        print(base_spell(target, power), end=", ")
-
-        def new_spell(target: str, power: int) -> str:
-            return f"Amplified: {power}"
-        return new_spell("Dragon", mult)
+        
+        return f"Original {base_spell(target, power)} , Amplified {base_spell(target, mult)}"
     return multiplied_power
 
 

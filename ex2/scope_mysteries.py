@@ -64,7 +64,7 @@ print(ench())
 print()
 
 
-def memory_value() -> dict[str, Callable]:
+def memory_vault() -> dict[str, Callable]:
     memory = {}
 
     def store(key: str, value: Any) -> str:
@@ -83,7 +83,7 @@ def memory_value() -> dict[str, Callable]:
 
 
 print("Testing memory vault...")
-memory = memory_value()
+memory = memory_vault()
 print(memory["store"]("secret", 42))
 print(memory["recall"]("secret"))
 print(memory["recall"]("unknown"))
