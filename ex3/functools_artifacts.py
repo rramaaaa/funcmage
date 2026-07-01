@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from functools import reduce, partial
+from functools import reduce, partial, lru_cache
 from typing import Any
 
 def spell_reducer(spells: list[int], operation: str) -> int:
@@ -26,11 +26,11 @@ print(f"Min: {spell_reducer(nums, "min")}")
 print()
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-    partial_power = partial(base_enchantment, 50)
-    partial_element = partial(base_enchantment, element = "Fire")
-    partial_target = partial(base_enchantment, target = "Dragone")
+    first_partial = partial(base_enchantment, 50, "Ice")
+    second_partial = partial(base_enchantment, 50, "Fire")
+    third_partial = partial(base_enchantment, 50, "Wind")
 
-    return {"power": partial_power, "element": partial_element, "target": partial_target}
+    return {"ice": first_partial, "fire": second_partial, "wind": third_partial}
 
 
 def base_enchantment(power: int, element: str, target: str) -> str:
@@ -38,12 +38,22 @@ def base_enchantment(power: int, element: str, target: str) -> str:
 
 
 part = partial_enchanter(base_enchantment)
-print(part["power"]("yes", "no"))
-print(part["target"](10, "Fire"))
-print(part["element"](10, "one"))
+print(part["ice"](target="Dgagon"))
+print(part["fire"](target="Dragon"))
+print(part["wind"](target="Dragon"))
+print()
+
+@lru_cache(maxsize=None)
+def memoized_fibonacci(n: int) -> int:
+    if n < 2:
+        return n
+    return memoized_fibonacci(n-1) + memoized_fibonacci(n-2)
 
 
-
-
-
-#def base_enchantment(power: int, element: str, target: str) -> str:
+print("Testing memoized fibonacci...")
+print(f"Fib(0): {memoized_fibonacci(0)}")
+print(f"Fib(1): {memoized_fibonacci(1)}")
+print(f"Fib(10): {memoized_fibonacci(10)}")
+print(f"Fib(15): {memoized_fibonacci(15)}")
+print(memoized_fibonacci.cache_info())
+print()
