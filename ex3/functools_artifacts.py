@@ -1,17 +1,18 @@
 from collections.abc import Callable
-from functools import reduce, partial, lru_cache
+from functools import reduce, partial, lru_cache, singledispatch
+from operator import add, mul
 from typing import Any
 
 def spell_reducer(spells: list[int], operation: str) -> int:
     if len(spells) != 0:
         if operation == "add":
-            return reduce(lambda x, y: x + y, spells)
+            return reduce(add, spells)
         if operation == "multiply":
-            return reduce(lambda x, y: x * y, spells)
+            return reduce(mul, spells)
         if operation == "max":
-            return reduce(lambda x, y: x if x > y else y, spells)
+            return min(spells)
         if operation == "min":
-            return reduce(lambda x, y: x if x < y else y, spells)
+            return max(spells)
         else:
             raise KeyError("Unknown operation")
     else:
@@ -37,6 +38,7 @@ def base_enchantment(power: int, element: str, target: str) -> str:
     return f"The power for {element} {target} is {power}"
 
 
+print("Testing partial enchanter...")
 part = partial_enchanter(base_enchantment)
 print(part["ice"](target="Dgagon"))
 print(part["fire"](target="Dragon"))
@@ -57,3 +59,26 @@ print(f"Fib(10): {memoized_fibonacci(10)}")
 print(f"Fib(15): {memoized_fibonacci(15)}")
 print(memoized_fibonacci.cache_info())
 print()
+
+
+def spell_dispatcher() -> Callable[[Any], str]:
+    @singledispatch
+    def dispatcher(Any) -> str:
+        return "Unknown spell type"
+    @dispatcher.register
+    def _(something: int) -> str:
+        return f"Damage spell: {something} damage"
+    @dispatcher.register
+    def _(something: str) -> str:
+        return f"Enchantment: {something}"
+    @dispatcher.register
+    def _(something: list) -> str:
+        return f"Multi-cast: {len(something)} spells"
+    return dispatcher
+
+print("Testing spell dispatcher...")
+dis = spell_dispatcher()
+print(dis(42))
+print(dis("fireball"))
+print(dis([1, 2, 3]))
+print(dis({"tech": 42}))
