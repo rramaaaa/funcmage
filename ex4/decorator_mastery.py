@@ -80,4 +80,21 @@ print()
 class MageGuild:
     @staticmethod
     def validate_mage_name(name: str) -> bool:
+        def checker(spell_name: str) -> int:
+            counter = 0
+            for i in spell_name:
+                if i >= 'a' or i <= 'A' or i >= 'z' or i <= 'Z' or i == ' ':
+                    counter += 1
+            return counter
+
+        if checker(name) >= 3:
+            return True
+        else:
+            return False
+
+
     def cast_spell(self, spell_name: str, power: int) -> str:
+        if validate_mage_name(spell_name) and power >= 10:
+            return f"Successfully cast {spell_name} with {power} power"
+        else:
+            return "Insufficient power for this spell"
