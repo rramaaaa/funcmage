@@ -12,36 +12,32 @@ def mage_counter() -> Callable:
     return counting
 
 
-counter_a = mage_counter()
-print("Testing mage counter...")
-print(f"counter_a call 1: {counter_a()}")
-print(f"counter_a call 2: {counter_a()}")
-counter_b = mage_counter()
-print(f"counter_b call 1: {counter_b()}")
-print()
+if __name__ == "__main__":
+    counter_a = mage_counter()
+    print("Testing mage counter...")
+    print(f"counter_a call 1: {counter_a()}")
+    print(f"counter_a call 2: {counter_a()}")
+    counter_b = mage_counter()
+    print(f"counter_b call 1: {counter_b()}")
+    print()
 
 
-def spell_accumntment(initial_power: int) -> Callable:
-    power_tot = 0
-    counter = mage_counter()
+def spell_accumulator(initial_power: int) -> Callable:
+    power_tot = initial_power
 
     def power_over_time(num: int) -> str:
         nonlocal power_tot
-        nonlocal counter
-        timer = counter()
-        if timer == 1:
-            power_tot = initial_power + num
-        else:
-            power_tot += num
+        power_tot += num
         return f"Base {initial_power}, add {num}: {power_tot}"
     return power_over_time
 
 
-accumntment = spell_accumntment(100)
-print("Testing spell accumulator...")
-print(accumntment(20))
-print(accumntment(30))
-print()
+if __name__ == "__main__":
+    accumntment = spell_accumulator(100)
+    print("Testing spell accumulator...")
+    print(accumntment(20))
+    print(accumntment(30))
+    print()
 
 
 def enchantment_factory(enchantment_type: str) -> Callable:
@@ -56,12 +52,13 @@ def enchantment_factory(enchantment_type: str) -> Callable:
     return enchanted_description
 
 
-print("Testing enchantment factory...")
-enchanted = enchantment_factory("Flaming")
-print(enchanted())
-ench = enchantment_factory("Frozen")
-print(ench())
-print()
+if __name__ == "__main__":
+    print("Testing enchantment factory...")
+    enchanted = enchantment_factory("Flaming")
+    print(enchanted())
+    ench = enchantment_factory("Frozen")
+    print(ench())
+    print()
 
 
 def memory_vault() -> dict[str, Callable]:
@@ -82,9 +79,10 @@ def memory_vault() -> dict[str, Callable]:
             }
 
 
-print("Testing memory vault...")
-memory = memory_vault()
-print(memory["store"]("secret", 42))
-print(memory["recall"]("secret"))
-print(memory["recall"]("unknown"))
-print()
+if __name__ == "__main__":
+    print("Testing memory vault...")
+    memory = memory_vault()
+    print(memory["store"]("secret", 42))
+    print(memory["recall"]("secret"))
+    print(memory["recall"]("unknown"))
+    print()

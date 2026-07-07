@@ -22,18 +22,21 @@ artifacts = [
 
 
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
-    sorted_artifacts = sorted(artifacts, key=lambda x: x.get("power",0))
+    sorted_artifacts = sorted(
+            artifacts, key=lambda x: x.get("power", 0), reverse=True
+            )
     return sorted_artifacts
 
 
-print("Testing artifact sorter...")
-artifacts = artifact_sorter(artifacts)
-for i in artifacts:
-    print(f"{i["name"]} ({i["power"]} power)")
-    len_art = len(artifacts)
-    if i["name"] != artifacts[len_art - 1]["name"]:
-        print("comes before")
-print()
+if __name__ == "__main__":
+    print("Testing artifact sorter...")
+    artifacts = artifact_sorter(artifacts)
+    for i in artifacts:
+        print(f"{i["name"]} ({i["power"]} power)")
+        len_art = len(artifacts)
+        if i["name"] != artifacts[len_art - 1]["name"]:
+            print("comes before")
+    print()
 
 
 mages = [
@@ -70,12 +73,12 @@ def power_filter(mages: list[dict], min_power: int) -> list[dict]:
     return filtered_power
 
 
-print("Testing power filter...")
-powers = power_filter(mages, 80)
-for i in powers:
-    print(f"{i["name"]} ({i["power"]} power)")
-
-print()
+if __name__ == "__main__":
+    print("Testing power filter...")
+    powers = power_filter(mages, 80)
+    for i in powers:
+        print(f"{i["name"]} ({i["power"]} power)")
+    print()
 
 spells = ['earthquake', 'shield', 'meteor', 'fireball']
 
@@ -85,12 +88,13 @@ def spell_transformer(spells: list[str]) -> list[str]:
     return transformered_spells
 
 
-print("Testing spell transformer...")
-spells = spell_transformer(spells)
-for i in spells:
-    print(i, end=" ")
-print()
-print()
+if __name__ == "__main__":
+    print("Testing spell transformer...")
+    spells = spell_transformer(spells)
+    for i in spells:
+        print(i, end=" ")
+    print()
+    print()
 
 
 def mage_stats(mages: list[dict]) -> dict:
@@ -106,8 +110,9 @@ def mage_stats(mages: list[dict]) -> dict:
     return stats
 
 
-print("Testing mage stats...")
-mages = mage_stats(mages)
-print(f"Most power = {mages["max_power"]}")
-print(f"Least power = {mages["min_power"]}")
-print(f"Average power = {mages["avg_power"]}")
+if __name__ == "__main__":
+    print("Testing mage stats...")
+    mages = mage_stats(mages)
+    print(f"Most power = {mages["max_power"]}")
+    print(f"Least power = {mages["min_power"]}")
+    print(f"Average power = {mages["avg_power"]}")

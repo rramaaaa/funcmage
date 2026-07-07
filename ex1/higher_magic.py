@@ -1,45 +1,46 @@
-from typing import Callable
-
-
-test_values = [7, 13, 8]
-test_targets = ['Dragon', 'Goblin', 'Wizard', 'Knight']
+from collections.abc import Callable
 
 
 def fireball(target: str, power: int) -> str:
     return f"Fireball hits {target} for {power} HP"
 
 
-def heal(target: str, power: int) -> int:
+def heal(target: str, power: int) -> str:
     return f"Heal restores {target} for {power} HP"
 
 
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
-    def combined_spell() -> tuple:
+    def combined_spell(target: str, power: int) -> tuple:
         return (
-                spell1(test_targets[0], test_values[0]),
-                spell2(test_targets[1], test_values[1])
+                spell1(target, power),
+                spell2(target, power)
                 )
     return combined_spell
 
 
-print("Testing spell combiner...")
-combined = spell_combiner(fireball, heal)
-print(combined())
-print()
+if __name__ == "__main__":
+    print("Testing spell combiner...")
+    combined = spell_combiner(fireball, heal)
+    print(combined("Dragon", 10))
+    print()
 
 
 def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     def multiplied_power(target: str, power: int) -> str:
         mult = power * multiplier
-        
-        return f"Original {base_spell(target, power)} , Amplified {base_spell(target, mult)}"
+
+        return (
+                f"Original {base_spell(target, power)} "
+                f", Amplified {base_spell(target, mult)}"
+                )
     return multiplied_power
 
 
-print("Testing power amplifier...")
-mega_fireball = power_amplifier(fireball, 9)
-print(mega_fireball("Dragon", 3))
-print()
+if __name__ == "__main__":
+    print("Testing power amplifier...")
+    mega_fireball = power_amplifier(fireball, 9)
+    print(mega_fireball("Dragon", 3))
+    print()
 
 
 def spell(target: str, power: int) -> str:
@@ -47,30 +48,24 @@ def spell(target: str, power: int) -> str:
 
 
 def conditional_caster(condition: Callable, spell: Callable) -> Callable:
-    def new_spell(target: str, power: int) -> str:
-        return spell(target, power)
-
-    def whatisthecondition() -> str:
-        whatisit = condition()
-        if whatisit:
-            return new_spell("oraginal", 10)
+    def whatisthecondition(target: str, power: int) -> str:
+        if condition(target, power):
+            return spell(target, power)
         else:
             return "Spell fizzled"
     return whatisthecondition
 
 
-def condition_status() -> int:
-    return 1
+def condition_status(target: str, power: int) -> int:
+    return power > 10
 
 
-print()
-
-print("Testing conditional caster...")
-cond = conditional_caster(condition_status, spell)
-print(cond())
-
-
-print()
+if __name__ == "__main__":
+    print()
+    print("Testing conditional caster...")
+    conditional = conditional_caster(condition_status, spell)
+    print(conditional("Dragon", 2))
+    print()
 
 spells = [fireball, spell, heal]
 
@@ -84,10 +79,11 @@ def spell_sequence(spells: list[Callable]) -> Callable:
     return all_spells
 
 
-print("Testing spell sequence...")
-call_spell = spell_sequence(spells)
-listofcaste = call_spell("Orginal", 10)
-x = 1
-for i in listofcaste:
-    print(f"Function {x}: {i}")
-    x += 1
+if __name__ == "__main__":
+    print("Testing spell sequence...")
+    call_spell = spell_sequence(spells)
+    listofcaste = call_spell("Orginal", 10)
+    x = 1
+    for i in listofcaste:
+        print(f"Function {x}: {i}")
+        x += 1
